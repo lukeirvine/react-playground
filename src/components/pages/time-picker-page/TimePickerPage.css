@@ -6,7 +6,7 @@
 }
 
 .tpp-form {
-    width: 500px;
+    width: 90%;
     margin-top: 20px;
 }
 
@@ -30,6 +30,9 @@
 
 
 @media only screen and (min-width: 992px) {
+    .tpp-form {
+        width: 500px;
+    }
 }
 
 
