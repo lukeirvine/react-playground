@@ -8,11 +8,11 @@ import Error from "./components/pages/error/Error";
 const App = () => {
   return (
     <HashRouter>
-          <Switch>
-              <Route path="/" component={Homepage} exact/>
-              <Route path="/timepicker" component={TimePicker} exact/>
-              <Route render={(props) => <Error {...props}/>}/>
-          </Switch>
+      <Switch>
+          <Route path="/" component={Homepage} exact/>
+          <Route path="/timepicker" component={TimePicker} exact/>
+          <Route render={(props) => <Error {...props}/>}/>
+      </Switch>
     </HashRouter>
   );
 }
