@@ -57,7 +57,7 @@ const toInternal = str => {
     return newStr;
 }
 
-const TimePicker = props => {
+const TimePickerV2 = props => {
     const { required, className, value, onChange, testid } = props;
     // internal value of format 1200am etc
     const [state, setState] = useState({
@@ -152,4 +152,4 @@ const TimePicker = props => {
     )
 }
 
-export default TimePicker
+export default TimePickerV2
