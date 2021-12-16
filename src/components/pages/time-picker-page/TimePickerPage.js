@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NavBar from './../../nav-bar/NavBar';
-import TimePicker from './../../time-picker/TimePicker';
+import TimePicker from '../../time-picker-v2/TimePickerV2';
 import { Form } from 'react-bootstrap';
 import './TimePickerPage.css';
 
