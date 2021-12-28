@@ -16,18 +16,6 @@ const TimePickerPage = () => {
     const [time3, setTime3] = useState('');
 
     useEffect(() => {
-        console.log("time0", time0)
-    }, [time0])
-
-    useEffect(() => {
-        console.log("time1", time1)
-    }, [time1])
-
-    useEffect(() => {
-        console.log("time2", time2)
-    }, [time2])
-
-    useEffect(() => {
         console.log("time3", time3)
     }, [time3])
 
@@ -75,7 +63,7 @@ const TimePickerPage = () => {
                         </Form.Text>
                     </Form.Group>
                     {/* <Form.Group className="mb-3">
-                        <Form.Label>Version 3</Form.Label>
+                        <Form.Label>My Version 3</Form.Label>
                         <TimePickerV3
                             value={time3}
                             onChange={event => setTime3(event)}
