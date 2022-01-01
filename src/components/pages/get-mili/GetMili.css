@@ -1,0 +1,47 @@
+.gm-page {
+    padding: 10px;
+}
+
+.gm-title {
+    font-size: 25px;
+}
+
+.gm-btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.gm-title, .gm-timepicker, .gm-date-picker, .gm-btn-wrapper {
+    margin-bottom: 15px;
+}
+
+/* Screen size specs */
+
+@media only screen and (max-width: 576px) {
+}
+
+
+@media only screen and (min-width: 576px) {
+}
+
+
+@media only screen and (min-width: 767px) {
+    .gm-page {
+        display: flex;
+        justify-content: center;
+    }
+
+    .gm-content {
+        width: 350px;
+        margin-top: 100px;
+    }
+}
+
+
+@media only screen and (min-width: 992px) {
+}
+
+
+@media only screen and (min-width: 1200px) {
+}
