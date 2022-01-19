@@ -16,6 +16,7 @@ const NavBar = () => {
                     <Nav className="mr-auto">
                         <Nav.Link as={Link} to="/timepicker">Time Picker</Nav.Link>
                         <Nav.Link as={Link} to="/get-mili">Get Miliseconds</Nav.Link>
+                        <Nav.Link as={Link} to="/babylon-page">Babylon</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
