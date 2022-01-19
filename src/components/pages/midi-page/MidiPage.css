@@ -1,0 +1,13 @@
+.midi-page {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.mp-content {
+    width: 600px;
+}
+
+.mp-title {
+    text-align: center;
+}

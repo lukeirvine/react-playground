@@ -17,6 +17,7 @@ const NavBar = () => {
                         <Nav.Link as={Link} to="/timepicker">Time Picker</Nav.Link>
                         <Nav.Link as={Link} to="/get-mili">Get Miliseconds</Nav.Link>
                         <Nav.Link as={Link} to="/babylon-page">Babylon</Nav.Link>
+                        <Nav.Link as={Link} to="/midi-page">Midi Reader</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

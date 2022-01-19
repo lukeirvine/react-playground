@@ -49,19 +49,19 @@ const BabylonPage = () => {
      */
     const onRender = (scene) => {
         if (ball !== undefined && rotate) {
-        ball.rotation.y += 0.04;
-        ball.rotation.z += 0.04;
+            ball.rotation.y += 0.04;
+            ball.rotation.z += 0.04;
         }
     };
-
-    useEffect(() => {
-        console.log("rotate", rotate)
-    }, [rotate])
 
     return (
         <div>
             <NavBar />
-            <Button id="rotate-btn" onClick={() => setRotate(prev => !prev)}>Rotate</Button>
+            <Button 
+                id="rotate-btn" 
+                onClick={() => setRotate(prev => !prev)}
+                variant={rotate ? 'danger' : 'primary'}
+            >{rotate ? 'Stop Rotating' : 'Rotate'}</Button>
             <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" />
         </div>
     )

@@ -38,7 +38,14 @@ export default (props) => {
         }
       };
     }
-  }, [reactCanvas]);
+  }, [
+    adaptToDeviceRatio,
+    antialias,
+    engineOptions,
+    onRender,
+    onSceneReady,
+    sceneOptions,
+  ]);
 
   return <canvas ref={reactCanvas} {...rest} />;
 };
