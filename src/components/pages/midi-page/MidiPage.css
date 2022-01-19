@@ -6,8 +6,20 @@
 
 .mp-content {
     width: 600px;
+    padding: 20px;
+    background-color: rgb(231, 231, 231);
+    border-radius: 10px;
+    box-shadow: 3px 3px 8px rgb(190, 190, 190);
 }
 
 .mp-title {
     text-align: center;
+}
+
+.mp-device-btn-wrapper {
+    margin-bottom: 10px;
+}
+
+.mp-device-btn {
+    width: 350px;
 }

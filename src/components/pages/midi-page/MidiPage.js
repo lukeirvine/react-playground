@@ -1,55 +1,79 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../../nav-bar/NavBar';
-// import MIDIVal from '@midival/core';
-// import { useMIDI } from '@react-midi/hooks';
 import './MidiPage.css';
-// const midi = require('midi');
+import { Button } from 'react-bootstrap';
 
 const MidiPage = () => {
-    const listEvents = () => {
-        const list = document.getElementById('midi-list');
-        const debugEl = document.getElementById('debug');
+    const [devices, setDevices] = useState({})
+    const [notes, setNotes] = useState([])
 
-        const connectToDevice = (device) => {
-            console.log('Connecting to device', device);
-            device.onmidimessage = m => {
-                const [command, key, velocity] = m.data;
-                if (command === 128) {
-                    debugEl.innerText = 'KEY UP';
-                } else if(command === 144) {
-                    debugEl.innerText = 'KEY DOWN: ' + key + ', ' + velocity;
-                }
+    const toNote = n => {
+        let base = n % 12;
+        switch (base) {
+            case 0:
+                return 'C';
+            case 1:
+                return 'Db';
+            case 2:
+                return 'D';
+            case 3:
+                return 'Eb';
+            case 4:
+                return 'E';
+            case 5:
+                return 'F';
+            case 6:
+                return 'Gb';
+            case 7:
+                return 'G';
+            case 8:
+                return 'Ab';
+            case 9:
+                return 'A';
+            case 10:
+                return 'Bb';
+            case 11:
+                return 'B';
+        }
+    }
+
+    const connectToDevice = (device) => {
+        console.log('Connecting to device', device);
+        device.onmidimessage = m => {
+            const [command, key, velocity] = m.data;
+            if (command === 128) {
+                setNotes(prev => {
+                    let newarr = JSON.parse(JSON.stringify(prev));
+                    newarr.splice(prev.indexOf(key), 1)
+                    return newarr;
+                })
+            } else if(command === 144) {
+                setNotes(prev => [...prev, key].sort((a, b) => a - b))
             }
         }
-
-        const replaceElements = inputs => {
-            while(list.firstChild) {
-                list.removeChild(list.firstChild)
-            }
-            const elements = inputs.map(e => {
-                console.log(e);
-                const el = document.createElement('li')
-                el.innerText = `${e.name} (${e.manufacturer})`;
-                el.addEventListener('click', connectToDevice.bind(null, e));
-                return el;
-            });
-
-            elements.forEach(e => list.appendChild(e));
-        }
-
-        navigator.requestMIDIAccess().then(access => {
-            console.log('access', access);
-            replaceElements(Array.from(access.inputs.values()));
-            access.onstatechange = e => {
-                replaceElements(Array.from(access.inputs.values()));
-            }
-        })
     }
 
     useEffect(() => {
-        // listDevices();
-        listEvents();
-        // midiValFunc();
+        const updateDevices = inputs => {
+            let dObj = {};
+            inputs.forEach(input => {
+                dObj[input.id] = input;
+            })
+            setDevices(dObj);
+        }
+
+        try {
+            navigator.requestMIDIAccess().then(access => {
+                console.log('access', access);
+                updateDevices(Array.from(access.inputs.values()));
+                access.onstatechange = e => {
+                    updateDevices(Array.from(access.inputs.values()));
+                }
+            })
+        } catch (error) {
+            console.error(error)
+            alert('Midi is only supported by Chrome, Edge, and Opera')
+        }
     }, [])
 
     return (
@@ -58,8 +82,23 @@ const MidiPage = () => {
             <div className="midi-page">
                 <div className='mp-content'>
                     <h1 className='mp-title'>Midi Reader</h1>
-                    <ul id='midi-list'></ul>
-                    <div id='debug'></div>
+                    <p>Click a device to open its connection.</p>
+                    {Object.values(devices).map((device, i) => {
+                        return (
+                            <div className='mp-device-btn-wrapper'>
+                                <Button 
+                                    key={i} 
+                                    className='mp-device-btn'
+                                    onClick={() => connectToDevice(device)}
+                                    variant={device.connection === 'open' ? 'success' : 'danger'}
+                                >{device.name} ({device.manufacturer})</Button>
+                            </div>
+                        )
+                    })}
+                    <span>Notes: </span>
+                    {notes.map((key, i) => {
+                        return <span key={i}>{toNote(key)}{i === notes.length - 1 ? '' : ' - '}</span>
+                    })}
                 </div>
             </div>
         </>
