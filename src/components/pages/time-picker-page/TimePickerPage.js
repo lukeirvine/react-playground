@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import NavBar from './../../nav-bar/NavBar';
 import { TimeInputPolyfill } from '@time-input-polyfill/react'
 import TimePickerV1 from '../../time-picker-v1/TimePickerV1';
 import TimePickerV2 from '../../time-picker-v2/TimePickerV2';
-import TimePickerV3 from '../../time-picker-v3/TimePickerV3';
+// import TimePickerV3 from '../../time-picker-v3/TimePickerV3';
 import { Form } from 'react-bootstrap';
 import './TimePickerPage.css';
 
-const DEBUG = true;
+// const DEBUG = true;
 
 const TimePickerPage = () => {
     const [time0, setTime0] = useState('');
     const [time1, setTime1] = useState('');
     const [time2, setTime2] = useState('');
-    const [time3, setTime3] = useState('');
+    // const [time3, setTime3] = useState('');
 
-    useEffect(() => {
-        console.log("time3", time3)
-    }, [time3])
+    // useEffect(() => {
+    //     console.log("time3", time3)
+    // }, [time3])
 
     return (
         <>

@@ -78,7 +78,7 @@ const TimePickerV2 = props => {
             // Send state out of component. Final step.
             onChange(toMilitaryTime(display))
         }
-    }, [display])
+    }, [display, onChange])
 
     // Triggers every time internal value is changed
     useEffect(() => {

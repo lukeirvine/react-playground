@@ -34,13 +34,15 @@ const MidiPage = () => {
                 return 'Bb';
             case 11:
                 return 'B';
+            default:
+                return '';
         }
     }
 
     const connectToDevice = (device) => {
         console.log('Connecting to device', device);
         device.onmidimessage = m => {
-            const [command, key, velocity] = m.data;
+            const [command, key] = m.data;
             if (command === 128) {
                 setNotes(prev => {
                     let newarr = JSON.parse(JSON.stringify(prev));

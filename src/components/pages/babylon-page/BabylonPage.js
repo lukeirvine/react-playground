@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Vector3, HemisphericLight, MeshBuilder, ArcRotateCamera, Texture, StandardMaterial } from "@babylonjs/core";
 import SceneComponent from "./../../scene-component/SceneComponent"; // uses above component in same directory
 // import SceneComponent from 'babylonjs-hook'; // if you install 'babylonjs-hook' NPM.
