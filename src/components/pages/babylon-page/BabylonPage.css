@@ -6,3 +6,9 @@
     top: 0;
     z-index: -1;
 }
+
+#rotate-btn {
+    position: fixed;
+    top: 70px;
+    left: 20px;
+}

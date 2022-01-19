@@ -1,57 +1,70 @@
-import React from "react";
-import { FreeCamera, Vector3, HemisphericLight, MeshBuilder } from "@babylonjs/core";
+import React, { useEffect, useState } from "react";
+import { Vector3, HemisphericLight, MeshBuilder, ArcRotateCamera, Texture, StandardMaterial } from "@babylonjs/core";
 import SceneComponent from "./../../scene-component/SceneComponent"; // uses above component in same directory
-import NavBar from './../../nav-bar/NavBar';
 // import SceneComponent from 'babylonjs-hook'; // if you install 'babylonjs-hook' NPM.
+import NavBar from './../../nav-bar/NavBar';
+import { Button } from 'react-bootstrap';
 import './BabylonPage.css';
 
-let box;
+let ball;
 
 const onSceneReady = (scene) => {
-  // This creates and positions a free camera (non-mesh)
-  var camera = new FreeCamera("camera1", new Vector3(0, 5, -10), scene);
 
-  // This targets the camera to scene origin
-  camera.setTarget(Vector3.Zero());
+    const canvas = scene.getEngine().getRenderingCanvas();
 
-  const canvas = scene.getEngine().getRenderingCanvas();
+    // Physics
+    scene.gravity = new Vector3(0, -9.81, 0);
+    scene.collisionsEnabled = true;
 
-  // This attaches the camera to the canvas
-  camera.attachControl(canvas, true);
 
-  // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-  var light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
+    // Textures
+    var bball = new StandardMaterial("bball", scene);
+    bball.diffuseTexture = new Texture("https://i.imgur.com/HM8TSYA.jpg", scene);
+    bball.specularTexture = new Texture("https://i.imgur.com/HM8TSYA.jpg", scene);
+    bball.ambientTexture = new Texture("https://i.imgur.com/HM8TSYA.jpg", scene);
 
-  // Default intensity is 1. Let's dim the light a small amount
-  light.intensity = 0.7;
+    // Camera
+    var camera = new ArcRotateCamera("Camera", 0, 0, 10, new Vector3(0,0,0), scene);
+    camera.setTarget(new Vector3(0,0,0, scene));
+    camera.attachControl(canvas, true);
 
-  // Our built-in 'box' shape.
-  box = MeshBuilder.CreateBox("box", { size: 2 }, scene);
 
-  // Move the box upward 1/2 its height
-  box.position.y = 1;
+    // Lighting
+    var light = new HemisphericLight("HemiLight", new Vector3(0, 20, 0), scene);
+    light.intensity = 0.6
 
-  // Our built-in 'ground' shape.
-  MeshBuilder.CreateGround("ground", { width: 6, height: 6 }, scene);
+
+    // Ball
+    ball = MeshBuilder.CreateSphere("ball", {diameter: 3}, scene);
+    ball.material = bball;
+    ball.rotation.y = Math.PI;
+    ball.checkCollisions = true;
 };
 
-/**
- * Will run on every frame render.  We are spinning the box on y-axis.
- */
-const onRender = (scene) => {
-  if (box !== undefined) {
-    var deltaTimeInMillis = scene.getEngine().getDeltaTime();
+const BabylonPage = () => {
+    const [rotate, setRotate] = useState(true);
 
-    const rpm = 20;
-    box.rotation.y += (rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000);
-  }
+    /**
+     * Will run on every frame render.  We are spinning the box on y-axis.
+     */
+    const onRender = (scene) => {
+        if (ball !== undefined && rotate) {
+        ball.rotation.y += 0.04;
+        ball.rotation.z += 0.04;
+        }
+    };
+
+    useEffect(() => {
+        console.log("rotate", rotate)
+    }, [rotate])
+
+    return (
+        <div>
+            <NavBar />
+            <Button id="rotate-btn" onClick={() => setRotate(prev => !prev)}>Rotate</Button>
+            <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" />
+        </div>
+    )
 };
-
-const BabylonPage = () => (
-  <div>
-    <NavBar />
-    <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" />
-  </div>
-);
 
 export default BabylonPage;
