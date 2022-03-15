@@ -26,3 +26,7 @@ export const toMili = str => {
     var minutes = parseInt(str.replace(/(\d+):(\d+)/g, '$2'));
     return (hours * 60 + minutes) * 60 * 1000;
 }
+
+export const capitalize = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}

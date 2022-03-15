@@ -1,0 +1,36 @@
+.sb-page {
+    padding: 15px;
+}
+
+.sb-form {
+    margin-bottom: 20px;
+}
+
+/* Screen size specs */
+
+@media only screen and (max-width: 576px) {
+}
+
+
+@media only screen and (min-width: 576px) {
+}
+
+
+@media only screen and (min-width: 767px) {
+}
+
+
+@media only screen and (min-width: 992px) {
+    .sb-page {
+        display: flex;
+        justify-content: center;
+    }
+
+    .sb-content {
+        width: 600px;
+    }
+}
+
+
+@media only screen and (min-width: 1200px) {
+}
