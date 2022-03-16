@@ -1,5 +1,22 @@
 .w-page {
     padding: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.w-content {
+    width: 500px;
+}
+
+.w-title {
+    text-align: center;
+}
+
+.w-grid-form {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .w-grid {
@@ -8,6 +25,7 @@
     gap: 5px;
     width: 350px;
     height: 420px;
+    margin-bottom: 20px;
 }
 
 .w-tile {
@@ -23,6 +41,63 @@
     font-weight: bold;
     user-select: none;
     color: white;
+}
+
+.w-results {
+    width: 100%;
+}
+
+.w-kb {
+    width: 500px;
+}
+
+.w-kb-row {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.w-kb-row button {
+    border-style: none;
+}
+
+.w-kb-letter {
+    background-color: rgb(129, 129, 129);
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    height: 58px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    margin-right: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    user-select: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.w-kb-letter:disabled {
+    background-color: rgb(172, 172, 172);
+}
+
+.w-kb-spacer {
+    flex-grow: 0.5;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.w-kb-one-point-five {
+    flex-grow: 1.5;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    font-size: 12px;
+}
+
+.w-kb-backspace {
+    font-size: 25px;
 }
 
 /* Screen size specs */

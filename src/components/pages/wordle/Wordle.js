@@ -57,13 +57,19 @@ const blankGrid = {
     }
 }
 
+const keyboard = [
+    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+    ['', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ''],
+    ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', <i className="bi-backspace w-kb-backspace" />]
+]
+
 const Wordle = () => {
     const [grid, setGrid] = useState(blankGrid)
     const [valid, setValid] = useState(false);
     const [possible, setPossible] = useState([]);
 
-    const handleNewLetter = e => {
-        return prev => {
+    const handleNewLetter = letter => {
+        setGrid(prev => {
             if (prev.index.i === 6 && prev.index.j === 0) {
                 return prev;
             }
@@ -73,7 +79,7 @@ const Wordle = () => {
                     ...prev.letters,
                     [prev.index.i]: {
                         ...prev.letters[prev.index.i],
-                        [prev.index.j]: e.key
+                        [prev.index.j]: letter
                     }
                 },
                 index: prev.index.j === 4 ? {
@@ -84,42 +90,44 @@ const Wordle = () => {
                     j: prev.index.j + 1
                 }
             }
-        }
+        })
     }
 
-    const handleBackSpace = prev => {
-        let i0 = prev.index.j === 0 ? prev.index.i - 1 : prev.index.i;
-        let j0 = prev.index.j === 0 ? 4 : prev.index.j - 1;
-        if (prev.index.i === 0 && prev.index.j === 0) {
-            return prev;
-        }
-        return {
-            ...prev,
-            letters: {
-                ...prev.letters,
-                [i0]: {
-                    ...prev.letters[i0],
-                    [j0]: ''
-                }
-            },
-            index: prev.index.j === 0 ? {
-                i: prev.index.i - 1,
-                j: 4
-            } : {
-                ...prev.index,
-                j: prev.index.j - 1
+    const handleBackSpace = () => {
+        setGrid(prev => {
+            let i0 = prev.index.j === 0 ? prev.index.i - 1 : prev.index.i;
+            let j0 = prev.index.j === 0 ? 4 : prev.index.j - 1;
+            if (prev.index.i === 0 && prev.index.j === 0) {
+                return prev;
             }
-        }
+            return {
+                ...prev,
+                letters: {
+                    ...prev.letters,
+                    [i0]: {
+                        ...prev.letters[i0],
+                        [j0]: ''
+                    }
+                },
+                index: prev.index.j === 0 ? {
+                    i: prev.index.i - 1,
+                    j: 4
+                } : {
+                    ...prev.index,
+                    j: prev.index.j - 1
+                }
+            }
+        })
     }
 
     const handleKeyDown = e => {
         // key pressed is a letter
         if (65 <= e.which && e.which <= 90) {
-            setGrid(handleNewLetter(e))
+            handleNewLetter(e.key);
         }
         // backspace
         if (e.which === 8) {
-            setGrid(handleBackSpace)
+            handleBackSpace();
         }
     }
 
@@ -269,7 +277,7 @@ const Wordle = () => {
         <div className="w-page">
             <div className="w-content">
                 <h1 className="w-title">Wordle Solver</h1>
-                <Form onSubmit={handleSubmit}>
+                <Form className="w-grid-form" onSubmit={handleSubmit}>
                     <div className="w-grid">
                         {Object.values(grid.letters).map((row, i) => (
                             <>{Object.values(row).map((tile, j) => (
@@ -288,10 +296,23 @@ const Wordle = () => {
                             ))}</>
                         ))}
                     </div>
-                    <Button
-                        disabled={!valid}
-                        type="submit"
-                    >Enter</Button>
+                    <div className="w-kb">
+                        {keyboard.map(row => (
+                            <div className="w-kb-row">
+                                {row.map(letter => (
+                                    <button 
+                                        id={/^\w+$/.test(letter) ? 'key-' + letter : 'key-backspace'}
+                                        type={letter === 'enter' ? 'submit' : 'button'}
+                                        disabled={letter === 'enter' && !valid}
+                                        onClick={/^\w$/.test(letter) ? () => handleNewLetter(letter) : letter === 'enter' ? handleSubmit : () => handleBackSpace()}
+                                        className={letter === '' ? 'w-kb-spacer' : 'w-kb-letter' + (/^\w$/.test(letter) ? '' : ' w-kb-one-point-five')}
+                                    >
+                                        {typeof letter === 'string' ? letter.toUpperCase() : letter}
+                                    </button>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                 </Form>
                 <div className="w-results">
                     <h2>Results</h2>
