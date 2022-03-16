@@ -6,6 +6,7 @@
 
 .w-content {
     /* width: 500px; */
+    width: 100%;
 }
 
 .w-title {
@@ -27,6 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .w-grid-container {
@@ -71,6 +73,7 @@
 
 .w-kb-row {
     display: flex;
+    width: 100%;
     margin-bottom: 8px;
 }
 
@@ -84,9 +87,7 @@
     color: white;
     font-weight: bold;
     height: 58px;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0%;
+    flex: 1 1 0%;
     margin-right: 6px;
     display: flex;
     align-items: center;
@@ -100,16 +101,12 @@
 }
 
 .w-kb-spacer {
-    flex-grow: 0.5;
-    flex-shrink: 1;
-    flex-basis: 0%;
+    flex: 0.5 1 0%;
     background-color: rgba(255, 255, 255, 0);
 }
 
 .w-kb-one-point-five {
-    flex-grow: 1.5;
-    flex-shrink: 1;
-    flex-basis: 0%;
+    flex: 1.5 1 0%;
     font-size: 12px;
 }
 
