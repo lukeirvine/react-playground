@@ -123,11 +123,15 @@ const Wordle = () => {
     const handleKeyDown = e => {
         // key pressed is a letter
         if (65 <= e.which && e.which <= 90) {
-            handleNewLetter(e.key);
+            document.getElementById('key-' + e.key).click();
         }
         // backspace
         if (e.which === 8) {
-            handleBackSpace();
+            document.getElementById('key-backspace').click();
+        }
+        // enter
+        if (e.which === 13) {
+            document.getElementById('key-enter').click();
         }
     }
 
@@ -275,26 +279,29 @@ const Wordle = () => {
     return <>
         <NavBar />
         <div className="w-page">
+            <h1 className="w-title">Wordle Solver</h1>
             <div className="w-content">
-                <h1 className="w-title">Wordle Solver</h1>
-                <Form className="w-grid-form" onSubmit={handleSubmit}>
-                    <div className="w-grid">
-                        {Object.values(grid.letters).map((row, i) => (
-                            <>{Object.values(row).map((tile, j) => (
-                                <div
-                                    className="w-tile"
-                                    style={{
-                                        backgroundColor: grid.letters[i][j] === '' ? 'white' : tileColors[grid.colors[i][j]],
-                                        cursor: i <= grid.index.i ? 'pointer' : ''
-                                    }}
-                                    onClick={handleTileClick(i, j)}
-                                >
+                <Form className="w-grid-form w-half-content" onSubmit={handleSubmit}>
+                    <div>
+                        <h2 className='w-subtitle'>Entry</h2>
+                        <div className="w-grid">
+                            {Object.values(grid.letters).map((row, i) => (
+                                <>{Object.values(row).map((tile, j) => (
                                     <div
-                                        className="w-tile-letter"
-                                    >{capitalize(tile)}</div>
-                                </div>
-                            ))}</>
-                        ))}
+                                        className="w-tile"
+                                        style={{
+                                            backgroundColor: grid.letters[i][j] === '' ? 'white' : tileColors[grid.colors[i][j]],
+                                            cursor: i <= grid.index.i ? 'pointer' : ''
+                                        }}
+                                        onClick={handleTileClick(i, j)}
+                                    >
+                                        <div
+                                            className="w-tile-letter"
+                                        >{capitalize(tile)}</div>
+                                    </div>
+                                ))}</>
+                            ))}
+                        </div>
                     </div>
                     <div className="w-kb">
                         {keyboard.map(row => (
@@ -314,14 +321,14 @@ const Wordle = () => {
                         ))}
                     </div>
                 </Form>
-                <div className="w-results">
-                    <h2>Results</h2>
+                {possible.length > 0 && <div className="w-results w-half-content">
+                    <h2 className="w-subtitle">Potential Solutions</h2>
                     <div className="w-results-words">
                         {possible.map(word => (
                             <>{word}, </>
                         ))}
                     </div>
-                </div>
+                </div>}
             </div>
         </div>
     </>
