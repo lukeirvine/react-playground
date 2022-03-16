@@ -20,6 +20,7 @@ const NavBar = () => {
                         <Nav.Link as={Link} to="/midi-page">Midi Reader</Nav.Link>
                         <Nav.Link as={Link} to="/form-validate">FormValidate</Nav.Link>
                         <Nav.Link as={Link} to="/spelling-bee">Spelling Bee</Nav.Link>
+                        <Nav.Link as={Link} to="/wordle">Wordle Solver</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

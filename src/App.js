@@ -8,6 +8,7 @@ import BabylonPage from './components/pages/babylon-page/BabylonPage';
 import MidiPage from './components/pages/midi-page/MidiPage';
 import FormValidate from './components/pages/form-validate/FormValidate';
 import SpellingBee from './components/pages/spelling-bee/SpellingBee';
+import Wordle from './components/pages/wordle/Wordle';
 import Error from "./components/pages/error/Error";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/midi-page" component={MidiPage} exact/>
           <Route path="/form-validate" component={FormValidate} exact/>
           <Route path="/spelling-bee" component={SpellingBee} exact/>
+          <Route path="/wordle" component={Wordle} exact/>
           <Route render={(props) => <Error {...props}/>}/>
       </Switch>
     </HashRouter>

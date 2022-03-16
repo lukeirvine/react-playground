@@ -1,0 +1,54 @@
+.w-page {
+    padding: 15px;
+}
+
+.w-grid {
+    display: grid;
+    grid-template: repeat(6, 1fr) / repeat(5, 1fr);
+    gap: 5px;
+    width: 350px;
+    height: 420px;
+}
+
+.w-tile {
+    border-style: solid;
+    border-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.w-tile-letter {
+    font-size: 2rem;
+    font-weight: bold;
+    user-select: none;
+    color: white;
+}
+
+/* Screen size specs */
+
+@media only screen and (max-width: 576px) {
+}
+
+
+@media only screen and (min-width: 576px) {
+}
+
+
+@media only screen and (min-width: 767px) {
+}
+
+
+@media only screen and (min-width: 992px) {
+    .w-page {
+        display: flex;
+        justify-content: center;
+    }
+
+    .w-content {
+    }
+}
+
+
+@media only screen and (min-width: 1200px) {
+}
