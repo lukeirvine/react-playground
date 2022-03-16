@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NavBar from './../../nav-bar/NavBar';
 import { Form, Button } from 'react-bootstrap';
 import { capitalize } from '../../../resources/Functions';
+import { words, debugWords } from './wordle-words';
 import './Wordle.css';
 
 const tileColors = {
@@ -10,35 +11,56 @@ const tileColors = {
     2: 'rgb(83, 141, 78)',
 }
 
+const debugGrid = {
+    letters: {
+        0: {0: 'o', 1: 'c', 2: 'e', 3: 'a', 4: 'n'},
+        1: {0: 'p', 1: 'e', 2: 'a', 3: 'c', 4: 'e'},
+        2: {0: 't', 1: 'e', 2: 'r', 3: 'm', 4: 's'},
+        3: {0: 'c', 1: 'a', 2: 't', 3: 'c', 4: 'h'},
+        4: {0: '', 1: '', 2: '', 3: '', 4: ''},
+        5: {0: '', 1: '', 2: '', 3: '', 4: ''}
+    },
+    colors: {
+        0: {0: 0, 1: 1, 2: 1, 3: 1, 4: 0},
+        1: {0: 0, 1: 1, 2: 1, 3: 1, 4: 0},
+        2: {0: 1, 1: 1, 2: 1, 3: 0, 4: 0},
+        3: {0: 2, 1: 2, 2: 2, 3: 0, 4: 0},
+        4: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
+        5: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
+    },
+    index: {
+        i: 4,
+        j: 0
+    }
+}
+
+const blankGrid = {
+    letters: {
+        0: {0: '', 1: '', 2: '', 3: '', 4: ''},
+        1: {0: '', 1: '', 2: '', 3: '', 4: ''},
+        2: {0: '', 1: '', 2: '', 3: '', 4: ''},
+        3: {0: '', 1: '', 2: '', 3: '', 4: ''},
+        4: {0: '', 1: '', 2: '', 3: '', 4: ''},
+        5: {0: '', 1: '', 2: '', 3: '', 4: ''}
+    },
+    colors: {
+        0: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
+        1: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
+        2: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
+        3: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
+        4: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
+        5: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
+    },
+    index: {
+        i: 0,
+        j: 0
+    }
+}
+
 const Wordle = () => {
-    const [grid, setGrid] = useState({
-        letters: {
-            0: {0: '', 1: '', 2: '', 3: '', 4: ''},
-            1: {0: '', 1: '', 2: '', 3: '', 4: ''},
-            2: {0: '', 1: '', 2: '', 3: '', 4: ''},
-            3: {0: '', 1: '', 2: '', 3: '', 4: ''},
-            4: {0: '', 1: '', 2: '', 3: '', 4: ''},
-            5: {0: '', 1: '', 2: '', 3: '', 4: ''}
-        },
-        colors: {
-            0: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
-            1: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
-            2: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
-            3: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
-            4: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
-            5: {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
-        },
-        index: {
-            i: 0,
-            j: 0
-        }
-    })
+    const [grid, setGrid] = useState(blankGrid)
     const [valid, setValid] = useState(false);
-    const [sets, setSets] = useState({
-        0: '',
-        1: '',
-        2: ''
-    })
+    const [possible, setPossible] = useState([]);
 
     const handleNewLetter = e => {
         return prev => {
@@ -51,7 +73,7 @@ const Wordle = () => {
                     ...prev.letters,
                     [prev.index.i]: {
                         ...prev.letters[prev.index.i],
-                        [prev.index.j]: capitalize(e.key)
+                        [prev.index.j]: e.key
                     }
                 },
                 index: prev.index.j === 4 ? {
@@ -133,26 +155,114 @@ const Wordle = () => {
         }
     }
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        let tempSets = {
-            0: '',
-            1: '', 
-            2: ''
-        }
+    const createSets = () => {
+        let sets = {
+            cols: {
+                0: {
+                    is: '',
+                    not: ''
+                },
+                1: {
+                    is: '',
+                    not: ''
+                },
+                2: {
+                    is: '',
+                    not: ''
+                },
+                3: {
+                    is: '',
+                    not: ''
+                },
+                4: {
+                    is: '',
+                    not: ''
+                },
+            },
+            has: '',
+            not: ''
+        };
+        
         for (let i = 0; i < grid.index.i; i++) {
             for (let j = 0; j < 5; j++) {
-                if (!tempSets[grid.colors[i][j]].includes(grid.letters[i][j])) {
-                    tempSets[grid.colors[i][j]] += grid.letters[i][j]
+                let letter = grid.letters[i][j];
+                let color = grid.colors[i][j];
+                // say what each char place is and is not.
+                // char place is not gray and yellow tiles, but is green
+                if (color < 2 && !sets.cols[j].not.includes(letter)) {
+                // only add to 'not' if 'not' doesn't already contain letter
+                    sets.cols[j].not += letter;
+                } 
+                if (color === 2 && sets.cols[j].is === '') {
+                // only add to 'is' if 'is' is empty
+                    sets.cols[j].is = letter;
+                }
+                if (color > 0 && !sets.has.includes(letter)) {
+                // if tile is yellow or green, add to 'has' if it doesn't already have letter
+                    sets.has += letter;
+                }
+                if (color === 0 && !sets.not.includes(letter)) {
+                // if tile is gray, add to 'not' if it doesn't already have letter
+                    sets.not += letter;
                 }
             }
         }
-        setSets(tempSets);
+        
+        return sets;
     }
 
-    useEffect(() => {
-        console.log(sets)
-    }, [sets])
+    const handleSubmit = e => {
+        e.preventDefault();
+        let sets = createSets();
+        console.log(sets);
+        let results = [];
+        // loop through wordle words
+        words.forEach(word => {
+            let works = true;
+            // console.log(word + " ====================================")
+            // loop through characters in each word
+            for (let j = 0; j < 5; j++) {
+                // console.log(word.charAt(j) + " =============")
+                // See if col has a green tile
+                if (sets.cols[j].is !== '') {
+                    // char position must be that green tile letter
+                    if (word.charAt(j) !== sets.cols[j].is) {
+                        // console.log("letter isn't green tile")
+                        works = false;
+                        break;
+                    }
+                } else {
+                    // make sure position is not something in the 'not' list
+                    if (sets.cols[j].not.includes(word.charAt(j))) {
+                        // console.log("has letter that's in the not list")
+                        works = false;
+                        break;
+                    }
+                }
+            }
+            // loop through characters word must have
+            for (let i = 0; i < sets.has.length; i++) {
+                if (!word.includes(sets.has.charAt(i))) {
+                    // console.log("word in the has list that isn't in the word")
+                    works = false;
+                    break;
+                }
+            }
+            // loop through characters word can't have anywhere
+            for (let i = 0; i < sets.not.length; i++) {
+                if (word.includes(sets.not.charAt(i))) {
+                    works = false;
+                    break;
+                }
+            }
+            if (works) {
+                console.log("pushing " + word)
+                results.push(word);
+            }
+        })
+        console.log(results);
+        setPossible(results);
+    }
 
     return <>
         <NavBar />
@@ -173,7 +283,7 @@ const Wordle = () => {
                                 >
                                     <div
                                         className="w-tile-letter"
-                                    >{tile}</div>
+                                    >{capitalize(tile)}</div>
                                 </div>
                             ))}</>
                         ))}
@@ -183,6 +293,14 @@ const Wordle = () => {
                         type="submit"
                     >Enter</Button>
                 </Form>
+                <div className="w-results">
+                    <h2>Results</h2>
+                    <div className="w-results-words">
+                        {possible.map(word => (
+                            <>{word}, </>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     </>
