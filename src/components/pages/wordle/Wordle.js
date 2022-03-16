@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from './../../nav-bar/NavBar';
-import { Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { capitalize } from '../../../resources/Functions';
 import './Wordle.css';
 
@@ -133,7 +133,8 @@ const Wordle = () => {
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = e => {
+        e.preventDefault();
         let tempSets = {
             0: '',
             1: '', 
@@ -158,28 +159,30 @@ const Wordle = () => {
         <div className="w-page">
             <div className="w-content">
                 <h1 className="w-title">Wordle Solver</h1>
-                <div className="w-grid">
-                    {Object.values(grid.letters).map((row, i) => (
-                        <>{Object.values(row).map((tile, j) => (
-                            <div 
-                                className="w-tile"
-                                style={{
-                                    backgroundColor: grid.letters[i][j] === '' ? 'white' : tileColors[grid.colors[i][j]],
-                                    cursor: i <= grid.index.i ? 'pointer' : ''
-                                }}
-                                onClick={handleTileClick(i, j)}
-                            >
-                                <div 
-                                    className="w-tile-letter"
-                                >{tile}</div>
-                            </div>
-                        ))}</>
-                    ))}
-                </div>
-                <Button 
-                    onClick={handleSubmit}
-                    disabled={!valid}
-                >Enter</Button>
+                <Form onSubmit={handleSubmit}>
+                    <div className="w-grid">
+                        {Object.values(grid.letters).map((row, i) => (
+                            <>{Object.values(row).map((tile, j) => (
+                                <div
+                                    className="w-tile"
+                                    style={{
+                                        backgroundColor: grid.letters[i][j] === '' ? 'white' : tileColors[grid.colors[i][j]],
+                                        cursor: i <= grid.index.i ? 'pointer' : ''
+                                    }}
+                                    onClick={handleTileClick(i, j)}
+                                >
+                                    <div
+                                        className="w-tile-letter"
+                                    >{tile}</div>
+                                </div>
+                            ))}</>
+                        ))}
+                    </div>
+                    <Button
+                        disabled={!valid}
+                        type="submit"
+                    >Enter</Button>
+                </Form>
             </div>
         </div>
     </>
