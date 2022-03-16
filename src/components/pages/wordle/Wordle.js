@@ -122,7 +122,7 @@ const Wordle = () => {
 
     const handleKeyDown = e => {
         // key pressed is a letter
-        if (65 <= e.which && e.which <= 90) {
+        if (65 <= e.which && e.which <= 90 && e.key !== 'Dead') {
             document.getElementById('key-' + e.key).click();
         }
         // backspace
@@ -282,8 +282,13 @@ const Wordle = () => {
             <h1 className="w-title">Wordle Solver</h1>
             <div className="w-content">
                 <Form className="w-grid-form w-half-content" onSubmit={handleSubmit}>
-                    <div>
+                    <div className="w-grid-container">
                         <h2 className='w-subtitle'>Entry</h2>
+                        <p className="w-entry-directions">
+                            Directions: Enter the words you tried on Wordle, click the tiles repeatedly to 
+                            turn them yellow or green, and then click enter to see possible next words down 
+                            below.
+                        </p>
                         <div className="w-grid">
                             {Object.values(grid.letters).map((row, i) => (
                                 <>{Object.values(row).map((tile, j) => (
@@ -320,6 +325,15 @@ const Wordle = () => {
                             </div>
                         ))}
                     </div>
+                    <Button
+                        className="w-reset-btn"
+                        variant="dark"
+                        type="button"
+                        onClick={() => {
+                            setGrid(blankGrid);
+                            setPossible([])
+                        }}
+                    >Reset</Button>
                 </Form>
                 {possible.length > 0 && <div className="w-results w-half-content">
                     <h2 className="w-subtitle">Potential Solutions</h2>
