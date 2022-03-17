@@ -68,7 +68,9 @@
 
 .w-kb {
     /* width: 500px; */
-    width: 100%;
+    width: 100vw;
+    padding: 10px;
+    padding-top: 0px;
 }
 
 .w-kb-row {
