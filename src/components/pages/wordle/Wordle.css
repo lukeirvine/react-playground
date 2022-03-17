@@ -95,7 +95,7 @@
     align-items: center;
     justify-content: center;
     user-select: none;
-    transition: all 0.2s ease-in-out;
+    /* transition: all 0.2s ease-in-out; */
 }
 
 .w-kb-letter:disabled {
